@@ -1,8 +1,20 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import MealsGrid from "@/components/meals/meals-grid";
+import { getMeals } from "@/lib/meals";
 
-const MealsPage = () => {
+interface MealsProps {
+  title: string;
+  slug: string;
+  image: string;
+  instructions: string;
+  creator: string;
+  creator_email: string;
+  summary: string;
+}
+
+const MealsPage = async () => {
+  const meals: MealsProps[] = await getMeals();
   return (
     <>
       <header className={styles.header}>
@@ -18,7 +30,7 @@ const MealsPage = () => {
         </p>
       </header>
       <main className={styles.main}>
-        <MealsGrid meals={[]} />
+        <MealsGrid meals={meals} />
       </main>
     </>
   );
