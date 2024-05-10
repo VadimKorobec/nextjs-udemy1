@@ -15,7 +15,12 @@ const NavLink = ({ href, children }: NavLinkProps) => {
   const path = usePathname();
 
   return (
-    <Link href={href} className={path === href ? styles.active : ""}>
+    <Link
+      href={href}
+      className={
+        path === href ? `${styles.link} ${styles.active}` : styles.link
+      }
+    >
       {children}
     </Link>
   );
