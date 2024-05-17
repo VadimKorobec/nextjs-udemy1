@@ -37,5 +37,27 @@ export const saveMeal = async (meal: any) => {
   const stream = fs.createWriteStream(`public/images/${fileName}`);
   const bufferedImage = await meal.image.arrayBuffer();
 
-  stream.write(Buffer.from(bufferedImage));
+  stream.write(Buffer.from(bufferedImage), (error) => {
+    if (error) {
+      throw new Error("Saving image failed!");
+    }
+  });
+
+  meal.image = `/images/${fileName}`;
+
+  db.prepare(
+    `
+  INSERT INTO meals
+  (title,summary,instructions,creator, creator_email,image,slug)
+  VALUES (
+  @title,
+  @summary,
+  @instructions,
+  @creator,
+  @creator_email,
+  @image,
+  @slug
+)
+  `
+  ).run(meal);
 };

@@ -1,7 +1,23 @@
 "use server";
 
-export const shareMeal = async (formData: FormData) => {
-  const meal = {
+import { redirect } from "next/navigation";
+import { saveMeal } from "./meals";
+
+interface Meal {
+  title: string;
+  summary: string;
+  instructions: string;
+  image: any;
+  creator: string;
+  creator_email: string;
+}
+
+const isInvalidText = (text: string): boolean => {
+  return !text || text.trim() === "";
+};
+
+export const shareMeal = async (prevState: any, formData: FormData) => {
+  const meal = <Meal>{
     title: formData.get("title"),
     summary: formData.get("summary"),
     instructions: formData.get("instructions"),
@@ -9,5 +25,20 @@ export const shareMeal = async (formData: FormData) => {
     creator: formData.get("name"),
     creator_email: formData.get("email"),
   };
-  console.log(meal);
+  if (
+    isInvalidText(meal.title) ||
+    isInvalidText(meal.summary) ||
+    isInvalidText(meal.instructions) ||
+    isInvalidText(meal.creator) ||
+    isInvalidText(meal.creator_email) ||
+    !meal.creator_email.includes("@") ||
+    !meal.image ||
+    meal.image.size === 0
+  ) {
+    return {
+      message: "Invalid input",
+    };
+  }
+  await saveMeal(meal);
+  redirect("/meals");
 };
