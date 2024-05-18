@@ -5,6 +5,7 @@ import MealsGrid from "@/components/meals/meals-grid";
 import { getMeals } from "@/lib/meals";
 
 import styles from "./page.module.css";
+import { Metadata } from "next";
 
 interface MealsProps {
   title: string;
@@ -15,6 +16,11 @@ interface MealsProps {
   creator_email: string;
   summary: string;
 }
+
+export const metadata: Metadata = {
+  title: "All meals",
+  description: "Browse the delicious meals shared by our vibrant community ",
+};
 
 const Meals = async () => {
   const meals: MealsProps[] = await getMeals();

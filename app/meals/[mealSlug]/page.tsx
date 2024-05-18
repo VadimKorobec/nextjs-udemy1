@@ -4,12 +4,23 @@ import { notFound } from "next/navigation";
 import { getMeal } from "@/lib/meals";
 
 import styles from "./page.module.css";
+import { Metadata } from "next";
 
 interface MealDetailsProps {
   params: {
     mealSlug: string;
   };
 }
+
+export const generateMetadata = async ({
+  params,
+}: MealDetailsProps): Promise<Metadata> => {
+  const meal = getMeal(params.mealSlug);
+  return {
+    title: meal.title,
+    description: meal.summary,
+  };
+};
 
 const MealDetailsPage = ({ params }: MealDetailsProps) => {
   const meal = getMeal(params.mealSlug);

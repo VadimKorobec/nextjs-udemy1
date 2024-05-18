@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { saveMeal } from "./meals";
+import { revalidatePath } from "next/cache";
 
 interface Meal {
   title: string;
@@ -40,5 +41,6 @@ export const shareMeal = async (prevState: any, formData: FormData) => {
     };
   }
   await saveMeal(meal);
+  revalidatePath("/meals");
   redirect("/meals");
 };
